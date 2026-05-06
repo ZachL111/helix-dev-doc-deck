@@ -1,0 +1,73 @@
+{
+  "repo": "helix-dev-doc-deck",
+  "language": "Rust",
+  "category": "Developer tools",
+  "goal": "Build a Rust toolkit that studies doc behavior through safe and unsafe fixtures, with remediation hints and no network dependency.",
+  "review_model": {
+    "terms": [
+      "change width",
+      "diagnostic quality",
+      "review cost",
+      "safe rewrite"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "change width",
+      "signal": 69,
+      "slack": 51,
+      "drag": 29,
+      "confidence": 75,
+      "score": 177,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "diagnostic quality",
+      "signal": 51,
+      "slack": 50,
+      "drag": 19,
+      "confidence": 90,
+      "score": 185,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "review cost",
+      "signal": 52,
+      "slack": 30,
+      "drag": 19,
+      "confidence": 56,
+      "score": 133,
+      "lane": "watch"
+    },
+    {
+      "name": "recovery",
+      "focus": "safe rewrite",
+      "signal": 75,
+      "slack": 25,
+      "drag": 13,
+      "confidence": 85,
+      "score": 221,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "change width",
+      "signal": 55,
+      "slack": 37,
+      "drag": 26,
+      "confidence": 55,
+      "score": 124,
+      "lane": "watch"
+    }
+  ]
+}

@@ -1,69 +1,40 @@
 # helix-dev-doc-deck
 
-`helix-dev-doc-deck` is a focused Rust codebase around build a Rust toolkit that studies doc behavior through safe and unsafe fixtures, with remediation hints and no network dependency. It is meant to be easy to inspect, run, and extend without a hosted service.
+`helix-dev-doc-deck` explores developer tools with a small Rust codebase and local fixtures. The technical goal is to build a Rust toolkit that studies doc behavior through safe and unsafe fixtures, with remediation hints and no network dependency.
 
-## Helix Dev Doc Deck Walkthrough
+## Why It Exists
 
-I would read the project from the outside in: command, fixture, model, then roadmap. That keeps the developer tools idea grounded in files that can be checked locally.
+The project exists to keep a narrow engineering decision visible and testable. For this repo, that decision is how change width and review cost should influence a review result.
 
-## Reason For The Project
+## Helix Dev Doc Deck Review Notes
 
-The repository exists to keep a technical idea small enough to reason about. The implementation avoids external dependencies where possible, then uses fixtures to make changes easy to review.
+Start with `safe rewrite` and `change width`. Those cases create the widest score spread in this repo, so they are the best quick check when the model changes.
 
-## Where Things Live
+## Features
 
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `Cargo.toml`: Rust package metadata
+- `fixtures/domain_review.csv` adds cases for change width and diagnostic quality.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/helix-dev-doc-walkthrough.md` walks through the case spread.
+- The Rust code includes a review path for `safe rewrite` and `change width`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Capabilities
+## Architecture Notes
 
-- Includes extended examples for safe defaults, including `surge` and `degraded`.
-- Documents repeatable output tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## How It Is Put Together
+The added Rust path is deliberately direct, with fixtures doing most of the explaining.
 
-The interesting part is the boundary between accepted and reviewed scenarios. Extended examples sit near that boundary so future edits can show whether the model became more permissive or more cautious. The Rust code keeps ownership and data movement plain, which makes the tests useful for checking both behavior and API shape.
-
-## Getting It Running
-
-Install Rust and run the commands from the repository root. The project does not need credentials or a hosted service.
-
-## Data Notes
-
-The examples are meant to be readable before they are exhaustive. They cover enough variation to show how latency and risk can pull a decision below the threshold.
-
-## Command Examples
+## Usage
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Tests
 
-## Check The Work
+The same command runs the local verification path. The highest-scoring domain case is `recovery` at 221, which lands in `ship`. The most cautious case is `stale` at 124, which lands in `watch`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Limitations And Roadmap
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Possible Extensions
-
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add one more developer tools fixture that focuses on a malformed or borderline input.
-
-## Tradeoffs
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.
