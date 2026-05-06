@@ -1,0 +1,17 @@
+{
+  "repo": "helix-dev-doc-deck",
+  "thresholds": {
+    "signal": 3,
+    "slack": 2,
+    "confidence": 1,
+    "drag": 5,
+    "ship": 168,
+    "watch": 97
+  },
+  "terms": [
+    "change width",
+    "diagnostic quality",
+    "review cost",
+    "safe rewrite"
+  ]
+}
